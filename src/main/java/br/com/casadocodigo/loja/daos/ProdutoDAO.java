@@ -18,4 +18,8 @@ public class ProdutoDAO {
 	public void gravar(Produto produto) {
 		entityManager.persist(produto);
 	}
+
+	public List<Produto> listar() {
+		return entityManager.createQuery("select p from Produto p", Produto.class).getResultList();
+	}
 }
