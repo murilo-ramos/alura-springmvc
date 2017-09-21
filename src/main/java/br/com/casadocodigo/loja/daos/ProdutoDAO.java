@@ -1,5 +1,7 @@
 package br.com.casadocodigo.loja.daos;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
