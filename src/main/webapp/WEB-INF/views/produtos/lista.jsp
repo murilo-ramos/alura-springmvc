@@ -8,7 +8,12 @@
 <title>Livros de java, Android, Iphone, PHP, Ruby e muito mais - Casa do código</title>
 </head>
 <body>
-    <table>
+	
+	<h1>Lista de Produtos</h1>
+	
+	<p>${sucesso}</p>
+
+    <table border = "1">
         <tr>
             <td>Título</td>
             <td>Descrição</td>
