@@ -9,20 +9,24 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import br.com.casadocodigo.loja.controllers.HomeController;
 import br.com.casadocodigo.loja.daos.ProdutoDAO;
+import org.springframework.format.datetime.DateFormatter;
+import org.springframework.format.datetime.DateFormatterRegistrar;
+import org.springframework.format.support.DefaultFormattingConversionService;
+import org.springframework.format.support.FormattingConversionService;
 
 @EnableWebMvc
 @ComponentScan(basePackageClasses={HomeController.class, ProdutoDAO.class})
 public class ApplicationWebConfiguration {
 	
-	@Bean
-	public InternalResourceViewResolver internalResourceViewResolve() {
+    @Bean
+    public InternalResourceViewResolver internalResourceViewResolve() {
         InternalResourceViewResolver resolve = new InternalResourceViewResolver();
         resolve.setPrefix("/WEB-INF/views/");
         resolve.setSuffix(".jsp");
         return resolve;
     }
 	
-	@Bean
+    @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
 
@@ -32,5 +36,13 @@ public class ApplicationWebConfiguration {
 
         return messageSource;
     }
-	
+    
+    @Bean
+    public FormattingConversionService mvcConversionService() {
+        DefaultFormattingConversionService conversionService = new DefaultFormattingConversionService();
+        DateFormatterRegistrar registra = new DateFormatterRegistrar();
+        registra.setFormatter(new DateFormatter("dd/MM/yyyy"));
+        registra.registerFormatters(conversionService);
+        return conversionService;
+    }
 }
