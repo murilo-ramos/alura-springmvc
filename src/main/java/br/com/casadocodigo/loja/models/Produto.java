@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class Produto {
@@ -20,8 +19,9 @@ public class Produto {
 	private String titulo;
 	private String descricao;
 	private int paginas;
+	private String sumarioPath;
         
-        private Calendar dataLancamento;
+    private Calendar dataLancamento;
 	
 	@ElementCollection
 	private List<Preco> precos;
@@ -58,17 +58,25 @@ public class Produto {
 		this.paginas = paginas;
 	}
 	
-	public List<Preco> getPrecos() {
-		return precos;
+	public Calendar getDataLancamento() {
+        return dataLancamento;
+    }
+
+    public void setDataLancamento(Calendar dataLancamento) {
+        this.dataLancamento = dataLancamento;
+    }
+	
+	public String getSumarioPath() {
+		return sumarioPath;
 	}
 
-        public Calendar getDataLancamento() {
-            return dataLancamento;
-        }
+	public void setSumarioPath(String sumarioPath) {
+		this.sumarioPath = sumarioPath;
+	}
 
-        public void setDataLancamento(Calendar dataLancamento) {
-            this.dataLancamento = dataLancamento;
-        }
+	public List<Preco> getPrecos() {
+		return precos;
+	}        
 
 	public void setPrecos(List<Preco> precos) {
 		this.precos = precos;
