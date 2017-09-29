@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +27,7 @@ import br.com.casadocodigo.loja.validation.ProdutoValidation;
 public class ProdutosController {
 	private static final String PRODUTOS_VIEW_FORM = "produtos/form";
 	private static final String PRODUTOS_VIEW_LISTA = "produtos/lista";
+	private static final String PRODUTOS_VIEW_DETALHE = "produtos/detalhe";
 	
 	private static final String BASE_FILES_FOLDER = "arquivos-sumario";
 	
@@ -69,6 +71,16 @@ public class ProdutosController {
 
 		ModelAndView view = new ModelAndView(PRODUTOS_VIEW_LISTA);
 		view.addObject("produtos", produtos);
+		
+		return view;
+	}
+	
+	@RequestMapping("/detalhe/{id}")
+	public ModelAndView detalhe(@PathVariable("id") Integer id) {
+		ModelAndView view = new ModelAndView(PRODUTOS_VIEW_DETALHE);
+		
+		Produto produto = this.produtoDao.getProdutoById(id);
+		view.addObject("produto", produto);
 		
 		return view;
 	}

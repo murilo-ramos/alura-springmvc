@@ -18,10 +18,16 @@ public class ProdutoDAO {
 	private EntityManager entityManager;
 	
 	public void gravar(Produto produto) {
-		entityManager.persist(produto);
+		this.entityManager.persist(produto);
 	}
 
 	public List<Produto> listar() {
-		return entityManager.createQuery("select p from Produto p", Produto.class).getResultList();
+		return this.entityManager.createQuery("select p from Produto p", Produto.class).getResultList();
+	}
+
+	public Produto getProdutoById(Integer id) {
+		return this.entityManager.createQuery("select distinct(p) from Produto p join fetch p.precos precos where p.id = :id", Produto.class)
+				.setParameter("id", id)
+				.getSingleResult();
 	}
 }
