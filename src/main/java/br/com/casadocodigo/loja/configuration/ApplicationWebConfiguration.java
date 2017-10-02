@@ -1,5 +1,6 @@
 package br.com.casadocodigo.loja.configuration;
 
+import br.com.casadocodigo.cart.CarrinhoCompras;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -20,7 +21,7 @@ import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
 
 @EnableWebMvc
-@ComponentScan(basePackageClasses={HomeController.class, ProdutoDAO.class, FileSaver.class})
+@ComponentScan(basePackageClasses={HomeController.class, ProdutoDAO.class, FileSaver.class, CarrinhoCompras.class})
 public class ApplicationWebConfiguration extends WebMvcConfigurerAdapter {
 	
     @Bean
@@ -28,6 +29,7 @@ public class ApplicationWebConfiguration extends WebMvcConfigurerAdapter {
         InternalResourceViewResolver resolve = new InternalResourceViewResolver();
         resolve.setPrefix("/WEB-INF/views/");
         resolve.setSuffix(".jsp");
+        resolve.setExposedContextBeanNames("carrinhoCompras");
         return resolve;
     }
 	
