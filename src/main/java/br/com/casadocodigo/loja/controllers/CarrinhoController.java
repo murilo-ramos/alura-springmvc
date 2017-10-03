@@ -9,18 +9,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.WebApplicationContext;
 
 @Controller
 @RequestMapping("/carrinho")
 @Scope(value = WebApplicationContext.SCOPE_REQUEST)
 public class CarrinhoController {
+    private static final String CARRINHO_INDEX_VIEW = "carrinho/itens";
     
     @Autowired
     private ProdutoDAO produtoDAO;
     
     @Autowired
     private CarrinhoCompras carrinhoCompras;
+    
+    @RequestMapping(method = RequestMethod.GET)
+    public String itens() {
+        return CARRINHO_INDEX_VIEW;
+    }
     
     @RequestMapping("/add")
     public String add(Integer produtoId, TipoPreco tipoPreco) {
