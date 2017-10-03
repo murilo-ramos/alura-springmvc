@@ -3,9 +3,12 @@ package br.com.casadocodigo.cart;
 import br.com.casadocodigo.loja.models.CarrinhoItem;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
 
 @Component
+@Scope(value = WebApplicationContext.SCOPE_SESSION)
 public class CarrinhoCompras {
     private Map<CarrinhoItem, Integer> carrinhoItems = new LinkedHashMap<>();
     
