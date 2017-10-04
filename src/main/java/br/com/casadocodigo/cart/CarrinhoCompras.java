@@ -1,26 +1,34 @@
 package br.com.casadocodigo.cart;
 
 import br.com.casadocodigo.loja.models.CarrinhoItem;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
 @Component
-@Scope(value = WebApplicationContext.SCOPE_SESSION)
-public class CarrinhoCompras {
-    private Map<CarrinhoItem, Integer> carrinhoItems = new LinkedHashMap<>();
+@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class CarrinhoCompras implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
+    private final Map<CarrinhoItem, Integer> carrinhoItems = new LinkedHashMap<>();
     
     public void addCarrinhoItem(CarrinhoItem carrinhoItem) {
         if (this.carrinhoItems.containsKey(carrinhoItem)) {
-            Integer quantidade = this.carrinhoItems.get(carrinhoItem);            
-            this.carrinhoItems.replace(carrinhoItem, quantidade, quantidade++);
+            Integer quantidade = this.carrinhoItems.get(carrinhoItem);
+            this.carrinhoItems.replace(carrinhoItem, quantidade, ++quantidade);
         } else {
             this.carrinhoItems.put(carrinhoItem, 1);
         }
+    }
+    
+    public void removerItem(CarrinhoItem carrinhoItem) {
+        this.carrinhoItems.remove(carrinhoItem);
     }
     
     public Collection<CarrinhoItem> getItens() {

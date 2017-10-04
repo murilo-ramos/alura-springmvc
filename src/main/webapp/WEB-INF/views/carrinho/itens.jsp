@@ -81,8 +81,6 @@
 	
 	<section class="container middle">
 		  <h2 id="cart-title">Seu carrinho de compras</h2>
-		  
-                  <form action="${s:mvcUrl('CC#itens').build()}" method="POST">
 		    <table id="cart-table">
 		      <colgroup>
 		        <col class="item-col"/>
@@ -108,19 +106,26 @@
 			          <td class="numeric-cell">${ item.preco }</td>
 			          <td class="quantity-input-cell"><input type="number" min="0" readonly="readonly" id="updates_4082273665" name="quantidade" value="${ carrinhoCompras.getQuantidadeByCarrinhoItem(item) }"/></td>
 			          <td class="numeric-cell">${ carrinhoCompras.getPrecoByCarrinhoItem(item) }</td>
-			          <td class="remove-item"><a href="/cart/change?218748921802387812&quantity=0"><img src="${contextPath }resources/imagens/excluir.png" alt="Excluir" title="Excluir" /></a></td>
+                                  <form action="${s:mvcUrl('CC#remover').arg(0, item.produto.id).arg(1, item.tipoPreco).build()}" method="POST">
+                                    <td class="remove-item">
+                                        <input type="image" src="${contextPath }resources/imagens/excluir.png" alt="Excluir" title="Excluir" /></a>
+                                    </td>
+                                  </form>
 			      </tr>
                           </c:forEach>
 		      </tbody>
 			      <tfoot>
 			        <tr>
-			          <td colspan="3"><input type="submit" class="checkout" name="checkout" value="Finalizar compra" /></td>
-			          <td class="quantity-input-cell"><input type="submit" class="update-cart" disabled="disabled" name="update" value=""/></td>
-			          <td class="numeric-cell">${ carrinhoCompras.precoTotal }</td><td></td>
+                                  <form action="${s:mvcUrl('PC#finalizar').build()}" method="POST">
+                                    <td colspan="3"><input type="submit" class="checkout" name="checkout" value="Finalizar compra" /></td>
+                                  </form>
+                                    <td class="quantity-input-cell"><input type="submit" class="update-cart" disabled="disabled" name="update" value=""/></td>
+                                    <td class="numeric-cell">${ carrinhoCompras.precoTotal }</td><td></td>
+                                  
 			        </tr>
 			      </tfoot>
 		    </table>
-                  </form>
+                  
 		  
 		  <h2>Você já conhece os outros livros da Casa do Código?</h2>
 		  <ul id="collection" class="related-books">          
