@@ -2,6 +2,7 @@ package br.com.casadocodigo.loja.controllers;
 
 import br.com.casadocodigo.loja.models.ValorPagamento;
 import br.com.casadocodigo.cart.CarrinhoCompras;
+import java.util.concurrent.Callable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,8 +23,9 @@ public class PagamentoController {
     private RestTemplate restTemplate;
     
     @RequestMapping(value = "/finalizar", method = RequestMethod.POST)
-    public String finalizar(RedirectAttributes redirectAttributes) {
-        ValorPagamento value = new ValorPagamento(this.carrinhoCompras.getPrecoTotal());
+    public Callable<String> finalizar(RedirectAttributes redirectAttributes) {
+        return () -> {
+            ValorPagamento value = new ValorPagamento(this.carrinhoCompras.getPrecoTotal());
         
         try {
             String result = this.restTemplate.postForObject(PAYMENT_URI_SERVICE, value, String.class);
@@ -38,6 +40,6 @@ public class PagamentoController {
         
         
         return "redirect:/produtos";
+        };
     }
-    
 }
