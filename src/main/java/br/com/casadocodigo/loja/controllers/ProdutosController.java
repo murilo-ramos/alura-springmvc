@@ -21,6 +21,7 @@ import br.com.casadocodigo.loja.daos.ProdutoDAO;
 import br.com.casadocodigo.loja.models.Produto;
 import br.com.casadocodigo.loja.models.TipoPreco;
 import br.com.casadocodigo.loja.validation.ProdutoValidation;
+import org.springframework.cache.annotation.CacheEvict;
 
 @Controller
 @RequestMapping("/produtos")
@@ -50,6 +51,7 @@ public class ProdutosController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
+        @CacheEvict(value = "produtosHome", allEntries = true)
 	public ModelAndView gravar(MultipartFile sumario, @Valid Produto produto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if (bindingResult.hasErrors()) {
 			return form(produto);

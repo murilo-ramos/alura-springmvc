@@ -52,7 +52,7 @@
 				<nav id="main-nav">
 					
 					<ul class="clearfix">
-						<li><a href="/carrinho" rel="nofollow">Carrinho</a></li>
+						<li><a href="<c:url value="/carrinho" />" rel="nofollow">Carrinho</a></li>
 
 						<li><a href="/pages/sobre-a-casa-do-codigo" rel="nofollow">Sobre Nós</a></li>
 

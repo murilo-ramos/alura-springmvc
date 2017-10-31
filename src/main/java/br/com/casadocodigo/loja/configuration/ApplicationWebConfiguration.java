@@ -15,6 +15,11 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import br.com.casadocodigo.infra.FileSaver;
 import br.com.casadocodigo.loja.controllers.HomeController;
 import br.com.casadocodigo.loja.daos.ProdutoDAO;
+import com.google.common.cache.CacheBuilder;
+import java.util.concurrent.TimeUnit;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.guava.GuavaCacheManager;
 import org.springframework.format.datetime.DateFormatter;
 import org.springframework.format.datetime.DateFormatterRegistrar;
 import org.springframework.format.support.DefaultFormattingConversionService;
@@ -23,6 +28,7 @@ import org.springframework.web.client.RestTemplate;
 
 @EnableWebMvc
 @ComponentScan(basePackageClasses={HomeController.class, ProdutoDAO.class, FileSaver.class, CarrinhoCompras.class})
+@EnableCaching
 public class ApplicationWebConfiguration extends WebMvcConfigurerAdapter {
 	
     @Bean
@@ -68,5 +74,15 @@ public class ApplicationWebConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
+    }
+    
+    @Bean
+    public CacheManager cacheManager() {
+        GuavaCacheManager manager = new GuavaCacheManager();
+        CacheBuilder<Object, Object> builder = CacheBuilder.newBuilder()
+                .maximumSize(100)
+                .expireAfterAccess(5, TimeUnit.MINUTES);
+        manager.setCacheBuilder(builder);
+        return manager;
     }
 }
