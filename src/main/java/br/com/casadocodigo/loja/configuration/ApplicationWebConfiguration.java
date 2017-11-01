@@ -16,6 +16,7 @@ import br.com.casadocodigo.infra.FileSaver;
 import br.com.casadocodigo.loja.controllers.HomeController;
 import br.com.casadocodigo.loja.daos.ProdutoDAO;
 import com.google.common.cache.CacheBuilder;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
@@ -24,7 +25,10 @@ import org.springframework.format.datetime.DateFormatter;
 import org.springframework.format.datetime.DateFormatterRegistrar;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
+import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 
 @EnableWebMvc
 @ComponentScan(basePackageClasses={HomeController.class, ProdutoDAO.class, FileSaver.class, CarrinhoCompras.class})
@@ -84,5 +88,13 @@ public class ApplicationWebConfiguration extends WebMvcConfigurerAdapter {
                 .expireAfterAccess(5, TimeUnit.MINUTES);
         manager.setCacheBuilder(builder);
         return manager;
+    }
+    
+    @Bean
+    public ViewResolver contentNegotiationViewResolver(ContentNegotiationManager manager) {
+        ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
+        resolver.setViewResolvers(Arrays.asList(internalResourceViewResolve(), new JsonViewResolver()));
+        resolver.setContentNegotiationManager(manager);
+        return resolver;
     }
 }
