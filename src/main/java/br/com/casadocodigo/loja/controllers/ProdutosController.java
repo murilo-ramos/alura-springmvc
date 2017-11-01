@@ -22,6 +22,7 @@ import br.com.casadocodigo.loja.models.Produto;
 import br.com.casadocodigo.loja.models.TipoPreco;
 import br.com.casadocodigo.loja.validation.ProdutoValidation;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/produtos")
@@ -86,4 +87,10 @@ public class ProdutosController {
 		
 		return view;
 	}
+        
+        @RequestMapping("/{id}")
+        @ResponseBody
+        public Produto detalheJson(@PathVariable("id") Integer id) {
+            return this.produtoDao.getProdutoById(id);
+        }
 }
