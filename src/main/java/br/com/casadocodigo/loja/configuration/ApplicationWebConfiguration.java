@@ -97,4 +97,14 @@ public class ApplicationWebConfiguration extends WebMvcConfigurerAdapter {
         resolver.setContentNegotiationManager(manager);
         return resolver;
     }
+    
+    /*
+     * Instruction by alura, but previously was needed to use the addResourceHandlers because resources stuffs 
+     * wasn't working, so it fixed the problem
+     * The use of bootstrap could be done using same resource handler
+     * 
+    @Override
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+        configurer.enable();
+    }*/
 }
