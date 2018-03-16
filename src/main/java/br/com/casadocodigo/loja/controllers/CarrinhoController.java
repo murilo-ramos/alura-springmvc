@@ -31,7 +31,7 @@ public class CarrinhoController {
         Produto produto   = this.produtoDAO.getProdutoById(produtoId);
         CarrinhoItem item = new CarrinhoItem(produto, tipoPreco);        
         this.carrinhoCompras.addCarrinhoItem(item);
-        return "redirect:/produtos";
+        return "redirect:/carrinho";
     }
     
     @RequestMapping(value = "/remover", method = RequestMethod.POST)
