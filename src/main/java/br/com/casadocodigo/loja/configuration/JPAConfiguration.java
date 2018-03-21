@@ -33,13 +33,7 @@ public class JPAConfiguration {
 	@Bean
 	@Profile("Dev")
 	private DataSource createDataSource() {
-		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setUsername("");
-		dataSource.setPassword("");
-		dataSource.setUrl("jdbc:sqlite:C:\\Users\\mcosta\\Murilo\\dev\\murilo\\casadocodigo.db");
-		dataSource.setDriverClassName("org.sqlite.JDBC");
-		
-		return dataSource;
+		return createMysqlDataSource();
 	}
 	
 	@Bean
@@ -49,26 +43,38 @@ public class JPAConfiguration {
 	
 	private Properties getAdditionalJPAProperties() {
 		Properties properties = new Properties();
-		properties.setProperty("hibernate.dialect" ,     "com.enigmabridge.hibernate.dialect.SQLiteDialect");
+		properties.setProperty("hibernate.dialect",      getMysqlJPADialect());
 		properties.setProperty("hibernate.show_sql",     "true");
 		properties.setProperty("hibernate.hbm2ddl.auto", "update");
 		
 		return properties;
 	}
 	
-	@SuppressWarnings("unused")
-	private void createMysqlDataSource(LocalContainerEntityManagerFactoryBean factoryBean) {
+	public DataSource createMysqlDataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setUsername("casadocodigo");
-		dataSource.setPassword("");
-		dataSource.setUrl("jdbc:mysql://mysql-database:3306/casadocodigo");
+		dataSource.setPassword("casadocodigo");
+		dataSource.setUrl("jdbc:mysql://localhost:3306/casadocodigo");
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		factoryBean.setDataSource(dataSource);
 		
-		Properties properties = new Properties();
-		properties.setProperty("hibernate.dialect" ,     "org.hibernate.dialect.MySQL5Dialect");
-		properties.setProperty("hibernate.show_sql",     "true");
-		properties.setProperty("hibernate.hbm2ddl.auto", "update");
-		factoryBean.setJpaProperties(properties);
+		return dataSource;
+	}
+	
+	public DataSource createSqliteDataSource() {
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		dataSource.setUsername("");
+		dataSource.setPassword("");
+		dataSource.setUrl("jdbc:sqlite:C:\\Users\\mcosta\\Murilo\\dev\\murilo\\casadocodigo.db");
+		dataSource.setDriverClassName("org.sqlite.JDBC");
+		
+		return dataSource;
+	}
+	
+	private String getMysqlJPADialect() {
+		return "org.hibernate.dialect.MySQL5Dialect";
+	}
+	
+	private String getSqliteJPADialect() {
+		return "com.enigmabridge.hibernate.dialect.SQLiteDialect";
 	}
 }
