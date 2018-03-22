@@ -1,6 +1,5 @@
 package br.com.casadocodigo.loja.configuration;
 
-import br.com.casadocodigo.cart.CarrinhoCompras;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -15,11 +14,9 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import br.com.casadocodigo.infra.FileSaver;
-import br.com.casadocodigo.loja.controllers.HomeController;
-import br.com.casadocodigo.loja.daos.ProdutoDAO;
 import com.google.common.cache.CacheBuilder;
 import java.util.Arrays;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
@@ -28,6 +25,8 @@ import org.springframework.format.datetime.DateFormatter;
 import org.springframework.format.datetime.DateFormatterRegistrar;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.LocaleResolver;
@@ -35,7 +34,8 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 
 @EnableWebMvc
-@ComponentScan(basePackageClasses={HomeController.class, ProdutoDAO.class, FileSaver.class, CarrinhoCompras.class})
+@ComponentScan(basePackages = {"br.com.casadocodigo"})
+//@ComponentScan(basePackageClasses={HomeController.class, ProdutoDAO.class, FileSaver.class, CarrinhoCompras.class})
 @EnableCaching
 public class ApplicationWebConfiguration extends WebMvcConfigurerAdapter {
 	
@@ -110,6 +110,23 @@ public class ApplicationWebConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     public LocaleResolver localeResolver() {
     	return new CookieLocaleResolver();
+    }
+    
+    @Bean
+    public MailSender mailSender(){
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+
+        mailSender.setHost("smtp.gmail.com");
+        mailSender.setUsername("alura.springmvc@gmail.com");
+        mailSender.setPassword("alura2015");
+        mailSender.setPort(587);
+
+        Properties mailProperties = new Properties();
+        mailProperties.put("mail.smtp.auth", true);
+        mailProperties.put("mail.smpt.starttls.enable", true);
+
+        mailSender.setJavaMailProperties(mailProperties);
+        return mailSender;
     }
     
     /*

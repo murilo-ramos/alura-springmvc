@@ -2,12 +2,14 @@
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -85,5 +87,10 @@ public class ProdutosController {
 		view.addObject("produto", produto);
 		
 		return view;
+	}
+	
+	@ExceptionHandler(NoResultException.class)
+	public String trataDetalheNaoEcontrado(){
+	    return "errorProductNotFound";
 	}
 }
