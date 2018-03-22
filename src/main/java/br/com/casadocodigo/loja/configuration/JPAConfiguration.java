@@ -18,13 +18,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class JPAConfiguration {
 	
 	@Bean
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, Properties additionalJPAProperties) {
 		LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();		
 		JpaVendorAdapter vendoAdapter = new HibernateJpaVendorAdapter();
 		
 		factoryBean.setJpaVendorAdapter(vendoAdapter);		
 		factoryBean.setDataSource(dataSource);		
-		factoryBean.setJpaProperties(getAdditionalJPAProperties());		
+		factoryBean.setJpaProperties(additionalJPAProperties);		
 		factoryBean.setPackagesToScan("br.com.casadocodigo.loja.models");
 		
 		return factoryBean;
@@ -32,22 +32,24 @@ public class JPAConfiguration {
 	
 	@Bean
 	@Profile("Dev")
-	private DataSource createDataSource() {
-		return createMysqlDataSource();
+	public DataSource createDataSource() {
+		return createSqliteDataSource();
+	}
+	
+	@Bean
+	@Profile("Dev")
+	public Properties additionalJPAProperties() {
+		Properties properties = new Properties();
+		properties.setProperty("hibernate.dialect",      getSqliteJPADialect());
+		properties.setProperty("hibernate.show_sql",     "true");
+		properties.setProperty("hibernate.hbm2ddl.auto", "update");
+		
+		return properties;
 	}
 	
 	@Bean
 	public JpaTransactionManager transactionManager(EntityManagerFactory factory) {
 	    return new JpaTransactionManager(factory);
-	}
-	
-	private Properties getAdditionalJPAProperties() {
-		Properties properties = new Properties();
-		properties.setProperty("hibernate.dialect",      getMysqlJPADialect());
-		properties.setProperty("hibernate.show_sql",     "true");
-		properties.setProperty("hibernate.hbm2ddl.auto", "update");
-		
-		return properties;
 	}
 	
 	public DataSource createMysqlDataSource() {
