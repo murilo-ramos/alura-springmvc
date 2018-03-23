@@ -17,14 +17,14 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 @Configuration
 public class JPAProductionConfiguration {
 	
-	@Autowired
-	private Environment environment;
+	//@Autowired
+	//private Environment environment;
 
 	@Bean
 	public DataSource createDataSource() throws URISyntaxException {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		
-		URI dbUrl = new URI(environment.getProperty("DATABASE_URL"));
+		URI dbUrl = new URI(System.getenv("DATABASE_URL"));
 
 	    dataSource.setUrl("jdbc:postgresql://" + dbUrl.getHost() + ":" + dbUrl.getPort() + dbUrl.getPath());
 	    dataSource.setUsername(dbUrl.getUserInfo().split(":")[0]);
