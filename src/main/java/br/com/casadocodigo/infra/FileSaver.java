@@ -24,7 +24,7 @@ public class FileSaver {
 				
 		try {
 			file.transferTo(new File(realPath));
-		} catch (IllegalStateException | IOException ex) {
+		} catch (Exception ex) {
 			//throw new RuntimeException(ex.getMessage());
 			LOGGER.error("Error when saving file to disk: " + ex.getMessage());
 		}
